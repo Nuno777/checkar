@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form method="post" action="add_numbers.php">
             <div class="form-group">
-                <label for="numbers">Numbers (separados por vírgula)</label>
-                <textarea class="form-control" id="numbers" name="numbers" rows="3"></textarea>
+                <label for="numbers">Numbers (separated by comma '67834681,3721893721')</label>
+                <textarea class="form-control" id="numbers" name="numbers" rows="10" ></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <a href="index.php" class="btn btn-secondary">Back</a>

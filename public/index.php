@@ -63,20 +63,20 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Números 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Números</title>
+    <title>Numbers</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <h1 class="mt-5">Números</h1>
+        <h1 class="mt-5">Numbers</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <a href="add_numbers.php" class="btn btn-success mb-3">Adicionar Números</a>
+        <a href="add_numbers.php" class="btn btn-success mb-3">Add Numbers</a>
         <ul class="list-group">
             <?php foreach (array_slice($numbers, 0, $limit) as $number) : ?>
                 <li class="list-group-item">
@@ -85,12 +85,12 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Números 
                     </a>
 
                     <?php if ($number['confirm_check'] == 1) : ?>
-                        <span class="badge badge-success ml-2">Confirmado</span>
+                        <span class="badge badge-success ml-2">Confirmed</span>
                     <?php elseif ($number['not_check'] == 1) : ?>
-                        <span class="badge badge-danger ml-2">Não Confirmado</span>
+                        <span class="badge badge-danger ml-2">Not Confirmed</span>
                     <?php else : ?>
-                        <a href="index.php?action=confirm&id=<?= $number['id'] ?>" class="btn btn-sm btn-success ml-2">Confirm</a>
-                        <a href="index.php?action=not_confirm&id=<?= $number['id'] ?>" class="btn btn-sm btn-danger ml-2">Not Confirm</a>
+                        <a href="index.php?action=confirm&id=<?= $number['id'] ?>" class="btn btn-sm btn-success ml-2">Confirmed</a>
+                        <a href="index.php?action=not_confirm&id=<?= $number['id'] ?>" class="btn btn-sm btn-danger ml-2">Not Confirmed</a>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
