@@ -17,9 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             foreach ($numberArray as $number) {
                 // Verifica se o número já existe na base de dados
-                $stmt = $pdo->prepare("SELECT COUNT(*) AS count FROM numbers WHERE value = :value");
-                $stmt->execute(['value' => $number]);
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM numbers WHERE value = ?");
+                $stmt->bind_param('s', $number);
+                $stmt->execute();
+                $result = $stmt->get_result()->fetch_assoc();
 
                 if ($result['count'] > 0) {
                     // Número já existe na base de dados
@@ -28,8 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 // Prepara e executa a inserção na base de dados
-                $stmt = $pdo->prepare("INSERT INTO numbers (value) VALUES (:value)");
-                if (!$stmt->execute(['value' => $number])) {
+                $stmt = $conn->prepare("INSERT INTO numbers (value) VALUES (?)");
+                $stmt->bind_param('s', $number);
+                if (!$stmt->execute()) {
                     $success = false;
                     break;
                 }
@@ -70,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <h1 class="mt-5">Add Numbers</h1>
 
-        <?php if ($message): ?>
-            <div class="alert alert-danger"><?= $message ?></div>
+        <?php if ($message) : ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
         <form method="post" action="add_numbers.php">
             <div class="form-group">
                 <label for="numbers">Numbers (separated by comma '67834681,3721893721')</label>
-                <textarea class="form-control" id="numbers" name="numbers" rows="10" ></textarea>
+                <textarea class="form-control" id="numbers" name="numbers" rows="10"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <a href="index.php" class="btn btn-secondary">Back</a>

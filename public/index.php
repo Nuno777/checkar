@@ -6,17 +6,17 @@ $message = '';
 // Verifica se a ação de atualização foi solicitada
 if (isset($_GET['action'], $_GET['id'])) {
     $action = $_GET['action'];
-    $id = $_GET['id'];
+    $id = intval($_GET['id']);
 
     // Verificar se a ação é válida (confirm ou not_confirm)
     if ($action === 'confirm') {
-        $stmt = $pdo->prepare("UPDATE numbers SET confirm_check = 1, not_check = 0 WHERE id = :id");
+        $stmt = $conn->prepare("UPDATE numbers SET confirm_check = 1, not_check = 0 WHERE id = ?");
     } elseif ($action === 'not_confirm') {
-        $stmt = $pdo->prepare("UPDATE numbers SET not_check = 1, confirm_check = 0 WHERE id = :id");
+        $stmt = $conn->prepare("UPDATE numbers SET not_check = 1, confirm_check = 0 WHERE id = ?");
     }
 
     // Executar a atualização
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bind_param('i', $id);
     $stmt->execute();
 
     // Redirecionar de volta para a página principal com uma mensagem de sucesso
@@ -36,19 +36,19 @@ $offset = ($page - 1) * $limit;
 
 try {
     // Query para obter os números da base de dados com paginação e limite
-    $stmt = $pdo->prepare("SELECT id, value, confirm_check, not_check FROM numbers LIMIT :limit OFFSET :offset");
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt = $conn->prepare("SELECT id, value, confirm_check, not_check FROM numbers LIMIT ? OFFSET ?");
+    $stmt->bind_param('ii', $limit, $offset);
     $stmt->execute();
-    $numbers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt->get_result();
+    $numbers = $result->fetch_all(MYSQLI_ASSOC);
 
     // Conta o total de números na base de dados
-    $stmtTotal = $pdo->query("SELECT COUNT(*) as total FROM numbers");
-    $totalRows = $stmtTotal->fetch(PDO::FETCH_ASSOC)['total'];
+    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM numbers");
+    $totalRows = $resultTotal->fetch_assoc()['total'];
 
     // Calcula o número total de páginas
     $totalPages = ceil($totalRows / $limit);
-} catch (PDOException $e) {
+} catch (mysqli_sql_exception $e) {
     // Tratamento de erros de banco de dados
     echo "Erro: " . $e->getMessage();
     die();

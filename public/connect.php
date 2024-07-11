@@ -1,13 +1,12 @@
 <?php
-$host = 'dpg-cq82v988fa8c738ccl1g-a';
-$db = 'checkardb';
-$user = 'checkardb_user';
-$pass = 'wzqgbNgdjPi3S3EgOQi0REKEMomdZxjk';
+$host = "localhost";
+$port = 3306;
+$database = "checknum";
+$userdb = "root";
+$passdb = "";
+$conn = new mysqli($host, $userdb, $passdb, $database, $port);
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo "Erro de conexão: " . $e->getMessage();
-    exit();
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+?>
