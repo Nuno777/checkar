@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: checkar
+    name: my-php-app
     env: php
-    buildCommand: "echo 'Build step'"
+    buildCommand: "./render-build.sh"
     startCommand: "php -S 0.0.0.0:80 -t public"
     envVars:
       - key: DB_HOST
