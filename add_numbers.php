@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Verifica se o usuário está autenticado e é administrador (type = 1)
+if (!isset($_SESSION['authenticated']) || $_SESSION['type'] != 1) {
+    header('Location: login.php');
+    exit;
+}
+
 include 'connect.php';
 
 $message = '';
@@ -69,6 +77,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand">
+            <?php
+            // Verifica se o usuário está logado e exibe seu nome
+            if (isset($_SESSION['authenticated'])) {
+                echo $_SESSION['username']; // Supondo que 'username' seja o campo correto da sessão
+            } else {
+                echo "Guest";
+            }
+            ?>
+        </a>
+
+        <!-- Formulário para Logout -->
+        <form class="form-inline" action="logout.php" method="POST">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+        </form>
+    </nav>
     <div class="container">
         <h1 class="mt-5">Add Numbers</h1>
 
@@ -78,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form method="post" action="add_numbers.php">
             <div class="form-group">
-                <label for="numbers">Numbers (separated by comma '67834681,3721893721')</label>
+                <label for="numbers">Numbers (separated by comma '67834681, 3721893721')</label>
                 <textarea class="form-control" id="numbers" name="numbers" rows="10"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

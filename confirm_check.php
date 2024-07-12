@@ -7,30 +7,9 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['type'] != 1) {
     exit;
 }
 
-include 'connect.php';
+include '../connect.php';
 
 $message = '';
-
-// Verifica se a ação de atualização foi solicitada
-if (isset($_GET['action'], $_GET['id'])) {
-    $action = $_GET['action'];
-    $id = intval($_GET['id']);
-
-    // Verificar se a ação é válida (confirm ou not_confirm)
-    if ($action === 'confirm') {
-        $stmt = $conn->prepare("UPDATE numbers SET confirm_check = 1, not_check = 0 WHERE id = ?");
-    } elseif ($action === 'not_confirm') {
-        $stmt = $conn->prepare("UPDATE numbers SET not_check = 1, confirm_check = 0 WHERE id = ?");
-    }
-
-    // Executar a atualização
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-
-    // Redirecionar de volta para a página principal com uma mensagem de sucesso
-    header('Location: index.php?message=success');
-    exit;
-}
 
 // Definições para paginação
 $limit = 14; // Número de itens por página
@@ -43,15 +22,15 @@ $page = max(1, $page);
 $offset = ($page - 1) * $limit;
 
 try {
-    // Query para obter os números da base de dados com paginação e limite, ordenados por ID DESC
-    $stmt = $conn->prepare("SELECT id, value, confirm_check, not_check FROM numbers ORDER BY id DESC LIMIT ? OFFSET ?");
+    // Query para obter os números confirmados da base de dados com paginação e limite, ordenados por ID DESC
+    $stmt = $conn->prepare("SELECT id, value, confirm_check FROM numbers WHERE confirm_check = 1 ORDER BY id DESC LIMIT ? OFFSET ?");
     $stmt->bind_param('ii', $limit, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $numbers = $result->fetch_all(MYSQLI_ASSOC);
 
-    // Conta o total de números na base de dados
-    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM numbers");
+    // Conta o total de números confirmados na base de dados
+    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM numbers WHERE confirm_check = 1");
     $totalRows = $resultTotal->fetch_assoc()['total'];
 
     // Calcula o número total de páginas
@@ -62,7 +41,7 @@ try {
     die();
 }
 
-$message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Números adicionados com sucesso!' : '';
+$message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Números confirmados exibidos com sucesso!' : '';
 ?>
 
 <!DOCTYPE html>
@@ -71,13 +50,12 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Números 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numbers</title>
+    <title>Confirmed Numbers</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-
     <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand">
             <?php
@@ -95,31 +73,20 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Números 
             <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
         </form>
     </nav>
-
     <div class="container">
-        <h1 class="mt-5">Numbers</h1>
+        <h1 class="mt-5">Confirmed Numbers</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
-
-        <a href="/private/add_numbers.php" class="btn btn-primary mb-3">Add Numbers</a>
-        <a href="/private/confirm_check.php" class="btn btn-success mb-3">Confirmed Numbers</a>
+        <a href="/private/index.php" class="btn btn-secondary">Back</a>
         <ul class="list-group">
             <?php foreach ($numbers as $number) : ?>
                 <li class="list-group-item">
                     <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/studio-x70-kit-series/2101900247/model/2101738675?sku=83Z52AA&serialnumber=<?= urlencode($number['value']) ?>">
                         <?= htmlspecialchars($number['value']) ?>
                     </a>
-
-                    <?php if ($number['confirm_check'] == 1) : ?>
-                        <span class="badge badge-success ml-2">Confirmed</span>
-                    <?php elseif ($number['not_check'] == 1) : ?>
-                        <span class="badge badge-danger ml-2">Not Confirmed</span>
-                    <?php else : ?>
-                        <a href="index.php?action=confirm&id=<?= $number['id'] ?>" class="btn btn-sm btn-success ml-2">Confirmed</a>
-                        <a href="index.php?action=not_confirm&id=<?= $number['id'] ?>" class="btn btn-sm btn-danger ml-2">Not Confirmed</a>
-                    <?php endif; ?>
+                    <span class="badge badge-success ml-2">Confirmed</span>
                 </li>
             <?php endforeach; ?>
         </ul>
