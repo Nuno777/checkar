@@ -19,11 +19,11 @@ if (isset($_GET['action'], $_GET['id'])) {
 
     // Verificar se a ação é válida (confirm, not_confirm, delete)
     if ($action === 'confirm') {
-        $stmt = $conn->prepare("UPDATE hpz4 SET confirm_check = 1, not_check = 0 WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE studioe70 SET confirm_check = 1, not_check = 0 WHERE id = ?");
     } elseif ($action === 'not_confirm') {
-        $stmt = $conn->prepare("UPDATE hpz4 SET not_check = 1, confirm_check = 0 WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE studioe70 SET not_check = 1, confirm_check = 0 WHERE id = ?");
     } elseif ($action === 'delete') {
-        $stmt = $conn->prepare("DELETE FROM hpz4 WHERE id = ?");
+        $stmt = $conn->prepare("DELETE FROM studioe70 WHERE id = ?");
     }
 
     // Executar a atualização ou exclusão
@@ -31,7 +31,7 @@ if (isset($_GET['action'], $_GET['id'])) {
     $stmt->execute();
 
     // Redirecionar de volta para a página principal com uma mensagem de sucesso e a página correta
-    header('Location: hpz4.php?page=' . $currentPage . '&message=success');
+    header('Location: studioE70.php?page=' . $currentPage . '&message=success');
     exit;
 }
 
@@ -48,14 +48,14 @@ $offset = ($page - 1) * $limit;
 
 try {
     // Query para obter os números da base de dados com paginação e limite, ordenados por ID DESC
-    $stmt = $conn->prepare("SELECT id, value, confirm_check, not_check FROM hpz4 ORDER BY id DESC LIMIT ? OFFSET ?");
+    $stmt = $conn->prepare("SELECT id, value, confirm_check, not_check FROM studioe70 ORDER BY id DESC LIMIT ? OFFSET ?");
     $stmt->bind_param('ii', $limit, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $numbers = $result->fetch_all(MYSQLI_ASSOC);
 
     // Conta o total de números na base de dados
-    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM hpz4");
+    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM studioe70");
     $totalRows = $resultTotal->fetch_assoc()['total'];
 
     // Calcula o número total de páginas
@@ -75,7 +75,7 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numbers HP Z4</title>
+    <title>Numbers Studio E70</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -101,38 +101,38 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
     </nav>
 
     <div class="container">
-        <h1 class="mt-5">Numbers HP Z4</h1>
+        <h1 class="mt-5">Numbers Studio E70</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <a href="add_numbershpz4.php" class="btn btn-primary mb-3">Add Numbers</a>
-        <a href="confirm_checkhpz4.php" class="btn btn-success mb-3">Valid Numbers</a>
+        <a href="add_numbersStudioE70.php" class="btn btn-primary mb-3">Add Numbers</a>
+        <a href="confirm_checkStudioE70.php" class="btn btn-success mb-3">Valid Numbers</a>
         <ul class="list-group">
         <?php foreach ($numbers as $number) : ?>
     <li class="list-group-item">
-        <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/hp-z4-g4-workstation/16449890/model/38461733?sku=329J8US&serialnumber=<?= urlencode($number['value']) ?>">
+        <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/studio-e70-series/2101738653/model/2101738677?sku=842F8AA&serialnumber=<?= urlencode($number['value']) ?>">
             <?= htmlspecialchars($number['value']) ?>
         </a>
 
         <?php if ($number['confirm_check'] == 1) : ?>
             <span class="badge badge-success ml-2">Valid</span>
-            <a href="hpz4.php?action=not_confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-warning ml-2">Change to Not Valid</a>
+            <a href="studioE70.php?action=not_confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-warning ml-2">Change to Not Valid</a>
         <?php elseif ($number['not_check'] == 1) : ?>
             <span class="badge badge-danger ml-2">Not Valid</span>
-            <a href="hpz4.php?action=confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-warning ml-2">Change to Valid</a>
+            <a href="studioE70.php?action=confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-warning ml-2">Change to Valid</a>
         <?php elseif ($number['confirm_check'] == 2) : ?>
             <span class="badge badge-secondary ml-2">Used</span>
         <?php elseif ($number['confirm_check'] == 3) : ?>
             <span class="badge badge-info ml-2">Factory warranty</span>
         <?php else : ?>
-            <a href="hpz4.php?action=confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-success ml-2">Valid</a>
-            <a href="hpz4.php?action=not_confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-danger ml-2">Not Valid</a>
+            <a href="studioE70.php?action=confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-success ml-2">Valid</a>
+            <a href="studioE70.php?action=not_confirm&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-danger ml-2">Not Valid</a>
         <?php endif; ?>
 
-        <?php if (strpos($number['value'], 'MXL') !== 0) : ?>
-            <a href="hpz4.php?action=delete&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-dark ml-2">
+        <?php if (strpos($number['value'], '8G2') !== 0) : ?>
+            <a href="studioE70.php?action=delete&id=<?= $number['id'] ?>&page=<?= $page ?>" class="btn btn-sm btn-dark ml-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                     <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />

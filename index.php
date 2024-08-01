@@ -113,7 +113,7 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
                 </a>
             </div>
             <div class="card">
-                <a href="studioe70.php">
+                <a href="studioE70.php">
                     <div class="card-body">
                         <h5 class="card-title">Studio E70</h5>
                         <p class="card-text">Go To Page</p>
