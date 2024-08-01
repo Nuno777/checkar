@@ -1,3 +1,55 @@
+<?php
+session_start();
+
+include 'connect.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    
+    // Consulta para obter o usuário pelo nome de usuário
+    $sql = "SELECT * FROM users WHERE username=?";
+    
+    // Preparando a consulta com um statement
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    
+    // Obtendo o resultado da consulta
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $stored_password = $row['pass']; // Senha armazenada no banco (hash sha512)
+        
+        // Aplicando hash SHA-512 para a senha fornecida pelo usuário
+        $hashed_password = hash('sha512', $password);
+        
+        // Comparando as senhas
+        if ($hashed_password === $stored_password) {
+            // Senha correta, logado com sucesso
+            $_SESSION['username'] = $username;
+            $_SESSION['authenticated'] = true; // Define a sessão como autenticada
+            header("Location: index.php"); // Redireciona para a página de dashboard após login
+            exit();
+        } else {
+            // Senha incorreta
+            $_SESSION['errors'] = array("Incorrect password. Try again.");
+            header("Location: login.php"); // Redireciona de volta para a página de login
+            exit();
+        }
+    } else {
+        // Usuário não encontrado
+        $_SESSION['errors'] = array("User not found.");
+        header("Location: login.php"); // Redireciona de volta para a página de login
+        exit();
+    }
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +93,7 @@
                         <?php unset($_SESSION['errors']); ?>
                     <?php endif; ?>
                     <!-- Formulário de login -->
-                    <form action="auth.php" method="POST">
+                    <form action="login.php" method="POST">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" name="username" required>
