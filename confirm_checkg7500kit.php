@@ -21,14 +21,14 @@ $offset = ($page - 1) * $limit;
 
 try {
     // Query para obter os números confirmados da base de dados com paginação e limite, ordenados por ID DESC
-    $stmt = $conn->prepare("SELECT id, value, confirm_check FROM hpz4 WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3 ORDER BY id DESC LIMIT ? OFFSET ?");
+    $stmt = $conn->prepare("SELECT id, value, confirm_check FROM g7500kit WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3 ORDER BY id DESC LIMIT ? OFFSET ?");
     $stmt->bind_param('ii', $limit, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $numbers = $result->fetch_all(MYSQLI_ASSOC);
 
     // Conta o total de números confirmados na base de dados
-    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM hpz4 WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3");
+    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM g7500kit WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3");
     $totalRows = $resultTotal->fetch_assoc()['total'];
 
     // Calcula o número total de páginas
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
 
     try {
         // Atualiza o status do número para o novo status
-        $update_stmt = $conn->prepare("UPDATE hpz4 SET confirm_check = ? WHERE id = ?");
+        $update_stmt = $conn->prepare("UPDATE g7500kit SET confirm_check = ? WHERE id = ?");
         $update_stmt->bind_param('ii', $new_status, $number_id);
         $update_stmt->execute();
 
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmed Numbers HP Z4</title>
+    <title>Confirmed Numbers G7500 Kit</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -94,16 +94,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
     </nav>
 
     <div class="container">
-        <h1 class="mt-5">Valid Numbers HP Z4</h1>
+        <h1 class="mt-5">Valid Numbers G7500 Kit</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
-        <a href="hpz4.php" class="btn btn-secondary">Back</a>
+        <a href="g7500kit.php" class="btn btn-secondary">Back</a>
         <ul class="list-group">
             <?php foreach ($numbers as $number) : ?>
                 <li class="list-group-item">
-                    <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/hp-z4-g4-workstation/16449890/model/38461733?sku=329J8US&serialnumber=<?= urlencode($number['value']) ?>">
+                    <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/g7500-kit-series/2101892913/model/2101738661?sku=83Z53AA&serialnumber=<?= urlencode($number['value']) ?>">
                         <?= htmlspecialchars($number['value']) ?>
                     </a>
                     <span class="badge 

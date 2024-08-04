@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
 
 <body>
     <nav class="navbar navbar-light bg-light justify-content-between">
-        <a href="index.php" class="navbar-brand">
+        <a href="/" class="navbar-brand">
             <?php
             // Verifica se o usuário está logado e exibe seu nome
             if (isset($_SESSION['authenticated'])) {

@@ -21,14 +21,14 @@ $offset = ($page - 1) * $limit;
 
 try {
     // Query para obter os números confirmados da base de dados com paginação e limite, ordenados por ID DESC
-    $stmt = $conn->prepare("SELECT id, value, confirm_check FROM studioe70 WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3 ORDER BY id DESC LIMIT ? OFFSET ?");
+    $stmt = $conn->prepare("SELECT id, value, confirm_check FROM g7500 WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3 ORDER BY id DESC LIMIT ? OFFSET ?");
     $stmt->bind_param('ii', $limit, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $numbers = $result->fetch_all(MYSQLI_ASSOC);
 
     // Conta o total de números confirmados na base de dados
-    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM studioe70 WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3");
+    $resultTotal = $conn->query("SELECT COUNT(*) as total FROM g7500 WHERE confirm_check = 1 OR confirm_check = 2 OR confirm_check = 3");
     $totalRows = $resultTotal->fetch_assoc()['total'];
 
     // Calcula o número total de páginas
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
 
     try {
         // Atualiza o status do número para o novo status
-        $update_stmt = $conn->prepare("UPDATE studioe70 SET confirm_check = ? WHERE id = ?");
+        $update_stmt = $conn->prepare("UPDATE g7500 SET confirm_check = ? WHERE id = ?");
         $update_stmt->bind_param('ii', $new_status, $number_id);
         $update_stmt->execute();
 
@@ -69,14 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmed Numbers Studio E70</title>
+    <title>Confirmed Numbers G7500</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <nav class="navbar navbar-light bg-light justify-content-between">
-        <a href="index.php" class="navbar-brand">
+        <a href="/" class="navbar-brand">
             <?php
             // Verifica se o usuário está logado e exibe seu nome
             if (isset($_SESSION['authenticated'])) {
@@ -94,16 +94,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
     </nav>
 
     <div class="container">
-        <h1 class="mt-5">Valid Numbers Studio E70</h1>
+        <h1 class="mt-5">Valid Numbers G7500</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
-        <a href="studioE70.php" class="btn btn-secondary">Back</a>
+        <a href="g7500.php" class="btn btn-secondary">Back</a>
         <ul class="list-group">
             <?php foreach ($numbers as $number) : ?>
                 <li class="list-group-item">
-                    <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/studio-e70-series/2101738653/model/2101738677?sku=842F8AA&serialnumber=<?= urlencode($number['value']) ?>">
+                    <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/g7500-series/2101738648/model/2101738654?sku=7U2M9AA&serialnumber=<?= urlencode($number['value']) ?>">
                         <?= htmlspecialchars($number['value']) ?>
                     </a>
                     <span class="badge 

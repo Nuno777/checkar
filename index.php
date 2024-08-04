@@ -84,7 +84,7 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
 <body>
 
     <nav class="navbar navbar-light bg-light justify-content-between">
-        <a href="index.php" class="navbar-brand">
+        <a href="/" class="navbar-brand">
             <?php
             // Verifica se o usuário está logado e exibe seu nome
             if (isset($_SESSION['authenticated'])) {
@@ -102,6 +102,13 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
     </nav>
 
     <div class="container">
+<br>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>ALERTA!</strong> Grande update G7500 & G7500 Kit, ainda não funcional!<strong> Em breve funcional o mais rapido possivel, Obrigado!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+
         <br>
         <div class="card-deck">
             <div class="card">
@@ -113,13 +120,26 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
                 </a>
             </div>
             <div class="card">
-                <a href="studioE70.php">
+                <a href="g7500.php">
                     <div class="card-body">
-                        <h5 class="card-title">Studio E70</h5>
+                        <h5 class="card-title">G7500</h5>
                         <p class="card-text">Go To Page</p>
                     </div>
                 </a>
             </div>
+            <div class="card">
+                <a href="g7500kit.php">
+                    <div class="card-body">
+                        <h5 class="card-title">G7500 Kit</h5>
+                        <p class="card-text">Go To Page</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card-deck">
             <div class="card">
                 <a href="hpz4.php">
                     <div class="card-body">
@@ -129,7 +149,6 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
                 </a>
             </div>
         </div>
-
 
     </div>
 

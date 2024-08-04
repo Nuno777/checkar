@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             foreach ($numberArray as $number) {
                 // Verifica se o número já existe na base de dados
-                $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM studioe70 WHERE value = ?");
+                $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM g7500 WHERE value = ?");
                 $stmt->bind_param('s', $number);
                 $stmt->execute();
                 $result = $stmt->get_result()->fetch_assoc();
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 // Prepara e executa a inserção na base de dados
-                $stmt = $conn->prepare("INSERT INTO studioe70 (value) VALUES (?)");
+                $stmt = $conn->prepare("INSERT INTO g7500 (value) VALUES (?)");
                 $stmt->bind_param('s', $number);
                 if (!$stmt->execute()) {
                     $success = false;
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($success) {
                 // Redireciona para index.php com mensagem de sucesso
-                header('Location: studioE70.php?message=success');
+                header('Location: g7500.php?message=success');
                 exit();
             } else {
                 if (!empty($existingNumbers)) {
@@ -71,14 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Numbers Studio E70</title>
+    <title>Add Numbers G7500</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <nav class="navbar navbar-light bg-light justify-content-between">
-        <a href="index.php" class="navbar-brand">
+        <a href="/" class="navbar-brand">
             <?php
             // Verifica se o usuário está logado e exibe seu nome
             if (isset($_SESSION['authenticated'])) {
@@ -96,22 +96,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </nav>
 
     <div class="container">
-        <h1 class="mt-5">Add Numbers Studio E70</h1>
+        <h1 class="mt-5">Add Numbers G7500</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-danger"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <form method="post" action="add_numbersStudioE70.php">
+        <form method="post" action="add_numbersg7500.php">
         
             <div class="form-group">
-                <label for="numbers">8G22227346EBFH, 8G224773A8C2FH, 8G2243739419FH
+                <label for="numbers">8G2152673810F2, 8G2330753274F2
                     <br>
                     compara esses numeros, e depois da me 10 numeros parecido a esses separado por virgulas</label>
                 <textarea class="form-control" id="numbers" name="numbers" rows="10"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="studioE70.php" class="btn btn-secondary">Back</a>
+            <a href="g7500.php" class="btn btn-secondary">Back</a>
         </form>
     </div>
 

@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             foreach ($numberArray as $number) {
                 // Verifica se o número já existe na base de dados
-                $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM numbers WHERE value = ?");
+                $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM g7500kit WHERE value = ?");
                 $stmt->bind_param('s', $number);
                 $stmt->execute();
                 $result = $stmt->get_result()->fetch_assoc();
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 // Prepara e executa a inserção na base de dados
-                $stmt = $conn->prepare("INSERT INTO numbers (value) VALUES (?)");
+                $stmt = $conn->prepare("INSERT INTO g7500kit (value) VALUES (?)");
                 $stmt->bind_param('s', $number);
                 if (!$stmt->execute()) {
                     $success = false;
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($success) {
                 // Redireciona para index.php com mensagem de sucesso
-                header('Location: studiox70.php?message=success');
+                header('Location: g7500kit.php?message=success');
                 exit();
             } else {
                 if (!empty($existingNumbers)) {
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Numbers Studio X70</title>
+    <title>Add Numbers G7500 Kit</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -96,21 +96,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </nav>
 
     <div class="container">
-        <h1 class="mt-5">Add Numbers Studio X70</h1>
+        <h1 class="mt-5">Add Numbers G7500 Kit</h1>
 
         <?php if ($message) : ?>
             <div class="alert alert-danger"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <form method="post" action="add_numbers.php">
+        <form method="post" action="add_numbersg7500kit.php">
+        
             <div class="form-group">
-                <label for="numbers">8G22507D3290FL, 8G23037D8A48FL, 8G23037D8A90FL, 8G23037D8A50FL
+                <label for="numbers">8G230774F04CF2, 8G2304750068F2
                     <br>
                     compara esses numeros, e depois da me 10 numeros parecido a esses separado por virgulas</label>
                 <textarea class="form-control" id="numbers" name="numbers" rows="10"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="studiox70.php" class="btn btn-secondary">Back</a>
+            <a href="g7500kit.php" class="btn btn-secondary">Back</a>
         </form>
     </div>
 
