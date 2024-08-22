@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_status'])) {
         <ul class="list-group">
             <?php foreach ($numbers as $number) : ?>
                 <li class="list-group-item">
-                    <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/g7500-series/2101738648/model/2101738654?sku=7U2M9AA&serialnumber=<?= urlencode($number['value']) ?>">
+                    <a target="_blank" href="https://support.hp.com/us-en/warrantyresult/g7500-series/2101738648/model/2101738654?sku=83Z50AA&serialnumber=<?= urlencode($number['value']) ?>">
                         <?= htmlspecialchars($number['value']) ?>
                     </a>
                     <span class="badge 

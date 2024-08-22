@@ -79,6 +79,7 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="geral.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -102,34 +103,40 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
     </nav>
 
     <div class="container">
-<br>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>ALERTA!</strong> Grande update G7500 & G7500 Kit, ainda não funcional!<strong> Em breve funcional o mais rapido possivel, Obrigado!</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            </button>
+        <br>
+
+
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">BIG UPDATE!</h4>
+            <p>O G7500 mais o G7500 Kit já estão a  funcionar, mas e muito dificil, em 30 consegues fazer 1.</p>
+            <!--<hr>
+             <p class="mb-0"></p>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ALERTA!</strong> O G7500 ainda estou a ver!<strong> Em breve funcional o mais rapido possivel, Obrigado!</strong>
+            </div> -->
         </div>
 
         <br>
         <div class="card-deck">
             <div class="card">
-                <a href="studiox70.php">
-                    <div class="card-body">
+                <a href="studiox70.php" class="text">
+                    <div class="card-body text">
                         <h5 class="card-title">Studio X70</h5>
                         <p class="card-text">Go To Page</p>
                     </div>
                 </a>
             </div>
             <div class="card">
-                <a href="g7500.php">
-                    <div class="card-body">
+                <a href="g7500.php" class="text">
+                    <div class="card-body text">
                         <h5 class="card-title">G7500</h5>
                         <p class="card-text">Go To Page</p>
                     </div>
                 </a>
             </div>
             <div class="card">
-                <a href="g7500kit.php">
-                    <div class="card-body">
+                <a href="g7500kit.php" class="text">
+                    <div class="card-body text">
                         <h5 class="card-title">G7500 Kit</h5>
                         <p class="card-text">Go To Page</p>
                     </div>
@@ -141,8 +148,8 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
 
         <div class="card-deck">
             <div class="card">
-                <a href="hpz4.php">
-                    <div class="card-body">
+                <a href="hpz4.php" class="text">
+                    <div class="card-body text">
                         <h5 class="card-title">HP Z4</h5>
                         <p class="card-text">Go To Page</p>
                     </div>

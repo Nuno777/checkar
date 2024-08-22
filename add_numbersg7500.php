@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="post" action="add_numbersg7500.php">
         
             <div class="form-group">
-                <label for="numbers">8G2152673810F2, 8G2330753274F2
+                <label for="numbers">8G2330753274F2, 8G2225747404F2, 8G223274A5B4F2, 8G22257479C8F2
                     <br>
                     compara esses numeros, e depois da me 10 numeros parecido a esses separado por virgulas</label>
                 <textarea class="form-control" id="numbers" name="numbers" rows="10"></textarea>

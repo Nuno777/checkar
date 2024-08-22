@@ -78,6 +78,7 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
     <title>Numbers Studio X70</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -101,11 +102,10 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
     </nav>
 
     <div class="container">
-        <h1 class="mt-5">Numbers Studio X70</h1>
+        <a href="/" class="text">
+            <h1 class="mt-5">Numbers Studio X70</h1>
+        </a>
 
-        <?php if ($message) : ?>
-            <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
-        <?php endif; ?>
 
         <a href="add_numbers.php" class="btn btn-primary mb-3">Add Numbers</a>
         <a href="confirm_check.php" class="btn btn-success mb-3">Valid Numbers</a>
