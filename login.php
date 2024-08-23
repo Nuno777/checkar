@@ -21,17 +21,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $stored_password = $row['pass']; // Senha armazenada no banco (hash sha512)
+        $verify_status = $row['verify']; // Status de verificação do usuário
 
         // Aplicando hash SHA-512 para a senha fornecida pelo usuário
         $hashed_password = hash('sha512', $password);
 
         // Comparando as senhas
         if ($hashed_password === $stored_password) {
-            // Senha correta, logado com sucesso
-            $_SESSION['username'] = $username;
-            $_SESSION['authenticated'] = true; // Define a sessão como autenticada
-            header("Location: index.php"); // Redireciona para a página de dashboard após login
-            exit();
+            if ($verify_status == 1) {
+                // Senha correta e usuário verificado, logado com sucesso
+                $_SESSION['username'] = $username;
+                $_SESSION['authenticated'] = true; // Define a sessão como autenticada
+                header("Location: index.php"); // Redireciona para a página de dashboard após login
+                exit();
+            } else {
+                // Usuário não verificado
+                $_SESSION['errors'] = array("Account not verified. Please verify your account.");
+                header("Location: login.php"); // Redireciona de volta para a página de login
+                exit();
+            }
         } else {
             // Senha incorreta
             $_SESSION['errors'] = array("Incorrect password. Try again.");
@@ -47,9 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,6 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .login-form {
@@ -73,15 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding: 30px;
             border-radius: 5px;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            display: none; /* Initially hidden */
         }
 
         .maintenance-message {
@@ -111,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="container">
-
+        <!-- Message de manutenção -->
         <div class="maintenance-message">
             <h1>We'll be back soon!</h1>
             <p>We're currently performing some maintenance. Please check back later.</p>
@@ -119,14 +121,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <span class="sr-only">Loading...</span>
             </div>
             <p>Thank you for your patience.</p>
+            <input type="text" id="unlock-code" class="form-control mt-4" placeholder="Enter unlock code">
+            <button id="unlock-button" class="btn btn-primary mt-2">Unlock</button>
         </div>
 
+        <!-- Formulário de login -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="login-form">
+                    <h2 class="text-center mb-4">Sign In</h2>
+
+                    <?php if (isset($_SESSION['errors'])) : ?>
+                        <div class="alert alert-danger">
+                            <?php foreach ($_SESSION['errors'] as $error) : ?>
+                                <?= htmlspecialchars($error) ?><br>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php unset($_SESSION['errors']); ?>
+                    <?php endif; ?>
+
+                    <form action="login.php" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS e dependências -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
 </body>
 
 </html>

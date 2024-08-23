@@ -108,7 +108,7 @@ $message = isset($_GET['message']) && $_GET['message'] == 'success' ? 'Operaçã
 
         <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">BIG UPDATE!</h4>
-            <p>O G7500 mais o G7500 Kit já estão a  funcionar, mas e muito dificil, em 30 consegues fazer 1.</p>
+            <p>O G7500 mais o G7500 Kit já estão a funcionar, mas e muito dificil, em 30 consegues fazer 1.</p>
             <!--<hr>
              <p class="mb-0"></p>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
