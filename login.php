@@ -83,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding: 30px;
             border-radius: 5px;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
-            display: none; /* Initially hidden */
+            display: none;
+            /* Initially hidden */
         }
 
         .maintenance-message {
@@ -121,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <span class="sr-only">Loading...</span>
             </div>
             <p>Thank you for your patience.</p>
-            <input type="text" id="unlock-code" class="form-control mt-4" placeholder="Enter unlock code">
+            <input type="password" id="unlock-code" class="form-control mt-4" placeholder="Enter code">
             <button id="unlock-button" class="btn btn-primary mt-2">Unlock</button>
         </div>
 

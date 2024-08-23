@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('unlock-button').addEventListener('click', function() {
         var unlockCode = document.getElementById('unlock-code').value;
-        var correctCode = '111'; // Replace with your unlock code
+        var correctCode = 'WTe5xVipDg3bXru'; // Replace with your unlock code
 
         if (unlockCode === correctCode) {
             document.querySelector('.maintenance-message').style.display = 'none';
