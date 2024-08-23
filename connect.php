@@ -1,11 +1,15 @@
 <?php
 $host = "localhost";
+$port = "5432"; // Porta padrão do PostgreSQL
 $database = "checknum";
-$userdb = "root";
-$passdb = "";
-$conn = new mysqli($host, $userdb, $passdb, $database);
+$userdb = "root"; // Certifique-se de que este usuário existe no PostgreSQL
+$passdb = ""; // Senha do usuário do banco
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$conn = pg_connect("host=$host port=$port dbname=$database user=$userdb password=$passdb");
+
+if (!$conn) {
+    die("Connection failed: " . pg_last_error());
+} else {
+    echo "Connection to PostgreSQL database successful!";
 }
 ?>
