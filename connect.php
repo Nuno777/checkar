@@ -1,9 +1,9 @@
 <?php
-$host = "localhost";
+$host = "dpg-cr3tihjtq21c73dqkpd0-a";
 $port = "5432"; // Porta padrão do PostgreSQL
 $database = "checknum";
-$userdb = "root"; // Certifique-se de que este usuário existe no PostgreSQL
-$passdb = ""; // Senha do usuário do banco
+$userdb = "checknum_user"; // Certifique-se de que este usuário existe no PostgreSQL
+$passdb = "EzYoUZHZDuRhT8aeGEQfGFW5zr1S3XsL"; // Senha do usuário do banco
 
 $conn = pg_connect("host=$host port=$port dbname=$database user=$userdb password=$passdb");
 
